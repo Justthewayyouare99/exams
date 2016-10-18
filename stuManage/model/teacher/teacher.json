@@ -1,0 +1,26 @@
+[{
+	"id":3001,
+	"name":"lichen",
+	"time":10,
+	"salary":7000,
+	"remark":"初级"
+	
+	
+},{
+	"id":3002,
+	"name":"zhangxyu",
+	"time":6,
+	"salary":3000,
+	"remark":"中级"
+	
+	
+},{
+	"id":3003,
+	"name":"fanye",
+	"time":18,
+	"salary":12000,
+	"remark":"高级"
+	
+	
+}]
+

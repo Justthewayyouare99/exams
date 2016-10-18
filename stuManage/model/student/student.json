@@ -1,0 +1,53 @@
+
+loadData([{
+	"id":1001,
+	"name":"mary",
+	"clazzId":"三年一班",
+	"gender":"女",
+	"mark":99
+	
+},{
+	"id":1002,
+	"name":"kun",
+	
+	"clazzId":"三年一班",
+	"gender":"男",
+	"mark":93
+},{
+	"id":1003,
+	"name":"jie",
+	
+	"clazzId":"三年二班",
+	"gender":"女",
+	"mark":96
+},{
+	"id":1004,
+	"name":"ling",
+	
+	"clazzId":"三年二班",
+	"gender":"女",
+	"mark":95
+	
+},{
+	"id":1005,
+	"name":"zhou",
+	
+	"clazzId":"三年二班",
+	"gender":"男",
+	"mark":90
+},{
+	"id":1006,
+	"name":"bingo",
+	
+	"clazzId":"三年三班",
+	"gender":"女",
+	"mark":92
+	
+},{
+	"id":1007,
+	"name":"tomson",
+	
+	"clazzId":"三年三班",
+	"gender":"男",
+	"mark":98
+}])

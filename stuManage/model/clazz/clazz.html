@@ -1,0 +1,217 @@
+
+<style>
+	th{ height:24px; background-color:#3FF;}
+	.hiddenTr{ display:none;}
+
+</style>
+
+<script>
+	
+		
+		function loadData(data){
+			
+			}
+			
+			
+			
+		$(function(){
+			//添加学生
+			/*$.getJSON("data/student.json",function callBack(data){
+				data.forEach(function(stu){
+					var newTr =$("<tr class='tr'></tr>");
+					var newBox =$("<td><input type='checkbox' /></td>");
+					newTr.append(newBox);
+					for(var key in stu){
+						var newTd=$("<td>"+stu[key]+"</td>");
+						newTr.append(newTd);
+					}
+						$("thead").append(newTr);
+					
+					})
+			
+				});*/
+				
+					//加载学生信息
+					loadClazzData();
+					//为全选绑定事件  change
+					$(".opt_btns :checkbox").off("change");
+					$(".opt_btns :checkbox").change(function(){
+						//console.log($(this).prop("checked"));//选中为true
+						if($(this).prop("checked")){//都用prop来获取和设置属性，
+							$("#claTbl td :checkbox:visible").prop("checked",                     true);
+							}else{
+							$("#claTbl td :checkbox").prop("checked",false);
+								
+								
+								}
+						});
+					//为按钮绑定事件
+					$(".opt_btns button").off("click");
+					$(".opt_btns button").click(function(){
+							//console.log($(this).text());
+							//opt为按钮中的文字
+							var opt =($(this).text());
+							switch(opt){
+								case "添加":
+									$(".tab_content").load(					                     "model/clazz/addClazz.html");
+								break;
+								case "修改":
+						//获取要修改元素的id
+						var id =$("#claTbl :checkbox:checked").map(                       function(index,item){return item.value;}).get(0);
+							alert(id);
+							if(id){
+								//从后台获取要修改学生的信息
+								var stu;
+									$.ajax("model/clazz/updClazz.json",
+									{
+										async:false,
+										success:function(data){
+											console.log(data);
+											stu = data;
+										
+										}
+									});
+							//加载修改学生信息的页面	
+							$(".tab_content").load(                             "model/clazz/updClazz.html" ,function(){
+								//console.log("初始化页面");
+								console.log(stu);
+								$(":text[name='name']").val(stu.name);
+								$(":radio[name='gender']").val(stu.gender);
+								$(":text[name='mark']").val(stu.mark);	
+										});
+									}else{
+										alert("先选择要修改的学生");
+										}
+									
+								break;
+								case "删除":
+								//获取要删除元素的id
+									var ids =$("#claTbl :checkbox:checked").map                       (function(index,item){return item.value;}).get().join();
+									alert(ids);
+										//console.log(ids);
+										//将删除的ID发送给后台
+										var url =																												                            "http://172.16.20.95:80/Clazz/delClazz";
+										$.ajax(url,{
+											dataType:"jsonp",
+											jsonp:"jsonp",
+											jsonpCallback:"aaas",
+											data:{ids:ids},
+											success:function(){
+												alert("删除成功");
+												//加载班级信息
+												loadClazzData();
+												}
+											});
+										
+								break;
+								case "刷新":
+								//刷新
+									loadClazzData();
+								break;
+								
+								}
+						});
+						
+	//为筛选按钮绑定事件
+	$(".search :submit").off("click");
+	$(".search :submit").on("click",function(){
+		var key = $("select[name='search_key']").val();	//name class grade
+		var val = $(":text[name='search_val']").val();
+		var data = new Object();
+		data[key] = val;
+		//加载数据
+		loadClazzData(data);
+	});
+
+});
+			
+			function loadClazzData(data){
+				data=data||{};
+				//跨域,要连上局域网还有Apache服务器要启动
+				var url="http://127.0.0.1:80/web1601/day01/Student/model/clazz/classes.json";
+		
+		$.ajax(url,{
+			//dataType:"jsonp",
+			//jsonp:"jsonp",
+			//jsonpCallback:"loadData"
+			dataType:"json",
+			success:loadData
+			});
+				
+				}
+			
+			
+			
+			function loadData(data){
+				//清空tbody中的原有信息
+				$("#claTbl tbody tr").remove(":not(:first)");
+				console.log(data);
+			data.forEach(function(item){
+				//console.log(item);//获取data数组中每一个教师对象
+				//创建行结构
+				var newTr=$("#claTbl .hiddenTr").clone().removeClass();
+				console.log(newTr);
+				//添加内容
+				newTr.find(":checkbox").val(item.id);
+				newTr.children().eq(1).text(item.className);
+				newTr.children().eq(2).text(item.classNum);
+				newTr.children().eq(3).text(item.master);
+				newTr.children().eq(4).text(item.monitor);
+				//追加
+				$("#claTbl tbody").append(newTr);
+
+				})
+					
+					
+				}
+		
+
+		
+		
+
+</script>
+
+<!-- 班级管理 -->
+			<div class="inner">
+				<div class="selects">
+					<select name="" id="">
+						<option value="name">姓名</option>
+						<option value="clazz">班级</option>
+						<option value="grade">成绩</option>
+					</select>
+					<input type="text">
+					<input type="submit" value="search">
+				</div>
+
+				<table id="claTbl">
+					<thead>
+						<tr>
+							<th>选择</th>
+							<th>班级名称</th>
+							<th>班级人数</th>
+							<th>班主任</th>
+							<th>班长</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="hiddenTr">
+							<td>
+								<input type="checkbox">
+							</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+
+				</table>
+				<div class="opt_btns">
+				<input type="checkbox" name="">
+					<button>添加</button>
+					<button>修改</button>
+					<button>删除</button>
+                    <button>刷新</button>
+				</div>
+			</div>
+

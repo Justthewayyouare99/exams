@@ -1,0 +1,98 @@
+
+<style>
+	h2{ margin:10px 0;}
+	.return{ position:absolute; right:20px;top:20px;font-weight:bold;}
+</style>
+<script>
+
+	
+	$(function(){
+		
+		
+		//为返回按钮添加事件
+		
+		$(".return").off("click");
+		$(".return").click(function(){
+			$(".tab_content").load("model/clazz/clazz.html");
+			});
+			$("form[name='addClaForm']").off("submit");
+			$("form[name='addClaForm']").submit(function(event){
+				//alert(2);
+				var url ="http://127.0.0.1:80/sms/register";
+				var className=$(":text[name='className']:checked").val();
+				var classNum=$(":radio[name='classNum']:checked").val();
+				var master=$("select[name='master']").val();
+				var monitor=$(":text[name='monitor']").val();
+				//跨域提交数据
+				$.ajax(url,{
+					dataType:"jsonp",
+					jsonp:"jsonp",
+					jsonpCallback:"callback",
+						data:{
+							className:className,
+							classNum:classNum,
+							master:master,
+							monitor:monitor
+						},
+						success:function(){
+							alert("保存成功");
+							$("form[name='addClaForm']").reset();
+							
+							},
+						error:function(){
+							alert("保存失败");
+							console.log(data);
+							
+							}	
+						
+					});
+					
+				alert("提交");
+				//阻止表单的默认提交两种方法：
+				//event.preventDefault();
+				return false;
+				});
+			
+		});
+</script>
+
+<div class="inner">
+<h2>录入班级信息</h2>
+<a href="javascript:void(0)" class="return">返回</a>
+<form name="addClaForm" action="saveClazz.action" method="post">
+<table>
+
+	<tbody>
+    	<tr>
+        	<td>班级名称</td>
+            <td><input type="text" name="className" /></td>
+        </tr>
+        <tr>
+        	<td>班级人数</td>
+            <td>
+            <input type="text" name="classNum" />
+            </td>
+        </tr>
+        <tr>
+        	<td>班主任</td>
+            <td><input type="text" name="master" /></td>
+        </tr>
+        <tr>
+        	<td>班长</td>
+            <td>
+            	<input type="text" name="monitor" />
+            </td>
+        </tr>
+        <tr>
+        	<td colspan="2">
+            	<input type="submit" value="保存" />
+                <input type="reset" value="重置" />
+            </td>
+            
+        </tr>
+    </tbody>
+    
+
+</table>
+</form>
+</div>
